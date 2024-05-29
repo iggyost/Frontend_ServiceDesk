@@ -1,0 +1,291 @@
+﻿<Page x:Class="Frontend_ServiceDesk.Views.Pages.RequestsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Frontend_ServiceDesk.Views.Pages"
+      mc:Ignorable="d" 
+      MaxHeight="1016" MaxWidth="1920"
+      MinHeight="656" MinWidth="1280"
+      Title="RequestsPage"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal"
+      TextOptions.TextRenderingMode="Auto"
+      Background="{DynamicResource MaterialDesignPaper}"
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      Loaded="Page_Loaded">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition Width="2.5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Background="#2B2B2B">
+            <StackPanel Orientation="Vertical"
+                        Margin="16">
+                <TextBox VerticalAlignment="Center"
+                         x:Name="searchField"
+                         HorizontalAlignment="Left"
+                         materialDesign:TextFieldAssist.HasClearButton="False"
+                         Width="256"
+                         FontSize="16"
+                         Foreground="White"
+                         BorderBrush="White"
+                         CaretBrush="White"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         KeyDown="searchField_KeyDown">
+                    <materialDesign:HintAssist.Hint>
+                        <StackPanel Margin="-2,0,0,0"
+                                    Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Search"
+                                                     VerticalAlignment="Top"
+                                                     Foreground="White"
+                                                     Height="20"
+                                                     Width="20"
+                                                     Margin="0,0,8,0"/>
+                            <TextBlock Text="Поиск по названию"
+                                       VerticalAlignment="Top"
+                                       FontSize="16"/>
+                        </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                </TextBox>
+                <TextBlock Text="Сортировка:"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Margin="0,16"></TextBlock>
+                <StackPanel Orientation="Vertical">
+                    <CheckBox Content="Сначала новые" 
+                              x:Name="firstNewRadiobutton"
+                              Checked="firstNewRadiobutton_Checked"
+                              Margin="0,0,0,8"
+                              Style="{StaticResource MaterialDesignDarkCheckBox}" />
+                    <CheckBox Content="Сначала старые" 
+                              x:Name="firstOldRadioButton"
+                              Checked="firstOldRadioButton_Checked"
+                              Style="{StaticResource MaterialDesignDarkCheckBox}" />
+                </StackPanel>
+                <TextBlock Text="Статус:"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Margin="0,16"></TextBlock>
+                <StackPanel Orientation="Vertical">
+                    <CheckBox Content="Актуальные" 
+                              x:Name="actualRadioButton"
+                              Checked="actualRadioButton_Checked"
+                              Margin="0,0,0,8"
+                              Style="{StaticResource MaterialDesignDarkCheckBox}" />
+                    <CheckBox Content="В процессе" 
+                              x:Name="inProcessRadioButton"
+                              Checked="inProcessRadioButton_Checked"
+                              Style="{StaticResource MaterialDesignDarkCheckBox}" />
+                </StackPanel>
+                <TextBlock Text="Категория:"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Margin="0,16"></TextBlock>
+                <ComboBox materialDesign:ComboBoxAssist.ShowSelectedItem="{Binding ElementName=DisplaySelectedItemCheckBox, Path=IsChecked}"
+                          DisplayMemberPath="{Binding Name}"
+                          x:Name="categoriesComboBox"
+                          SelectionChanged="categoriesComboBox_SelectionChanged"></ComboBox>
+                <TextBlock Text="Отправитель:"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Margin="0,16,0,0"></TextBlock>
+                <TextBox VerticalAlignment="Center"
+                         HorizontalAlignment="Left"
+                         x:Name="senderField"
+                         materialDesign:TextFieldAssist.HasClearButton="False"
+                         Width="256"
+                         FontSize="16"
+                         Foreground="White"
+                         BorderBrush="White"
+                         CaretBrush="White"
+                         KeyDown="senderField_KeyDown"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+                    <materialDesign:HintAssist.Hint>
+                        <StackPanel Margin="-2,0,0,0"
+                                    Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Search"
+                                                     VerticalAlignment="Top"
+                                                     Foreground="White"
+                                                     Height="20"
+                                                     Width="20"
+                                                     Margin="0,0,8,0"/>
+                            <TextBlock Text="Поиск по отправителю"
+                                       VerticalAlignment="Top"
+                                       FontSize="16"/>
+                        </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                </TextBox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="2"
+              Background="#2B2B2B">
+            <ProgressBar IsIndeterminate="True"
+                         x:Name="loadingIndicator"
+                         Visibility="Collapsed"
+                         Style="{StaticResource MaterialDesignCircularProgressBar}"
+                         Width="64"
+                         Height="64"
+                         Margin="0,0,0,96"
+                         Panel.ZIndex="1"
+                         Value="0" />
+            <ListView x:Name="requestsListView"
+                      VirtualizingPanel.ScrollUnit="Pixel">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Height="224"
+                    Margin="16,0"
+                    BorderThickness="0"
+                    CornerRadius="20"
+                    Background="#333333">
+                            <Border.Effect>
+                                <DropShadowEffect Direction="224"
+                                      Opacity="0.3"
+                                      BlurRadius="8"></DropShadowEffect>
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="440"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="512"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid Margin="16,8"
+                                      HorizontalAlignment="Left">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                                        <ColumnDefinition Width="0.6*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <!--Инцидент-->
+                                    <TextBlock Text="Инцидент:"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Margin="4,0,16,0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"></TextBlock>
+                                    <TextBlock Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   TextWrapping="Wrap"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"></TextBlock>
+                                    <!--Отправитель-->
+                                    <TextBlock Text="Отправитель:"
+                                   Grid.Row="1"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Margin="4,0,16,0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"></TextBlock>
+                                    <TextBlock Grid.Column="1"
+                                   Grid.Row="1"
+                                   Text="{Binding UserEmail}"
+                                   TextWrapping="Wrap"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"></TextBlock>
+                                    <!--Статус-->
+                                    <TextBlock Text="Статус:"
+                                               Grid.Row="2"
+                                               FontSize="14"
+                                               FontWeight="SemiBold"
+                                               Margin="4,0,16,0"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"></TextBlock>
+                                    <StackPanel Grid.Column="1"
+                                                Grid.Row="2"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                        <Ellipse Height="12"
+                                                 Width="12"
+                                                 Tag="{Binding StatusId}"
+                                                 x:Name="ellipseStatus"
+                                                 Loaded="ellipseStatus_Loaded"
+                                                 Margin="0,0,8,0"></Ellipse>
+                                        <TextBlock Grid.Column="1"
+                                                   Grid.Row="2"
+                                                   Text="{Binding Status}"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="16"
+                                                   VerticalAlignment="Center"></TextBlock>
+                                    </StackPanel>
+                                    <!--Категория-->
+                                    <TextBlock Text="Категория:"
+                                   Grid.Row="3"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Margin="4,0,16,0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"></TextBlock>
+                                    <TextBlock Grid.Column="1"
+                                   Grid.Row="3"
+                                   Text="{Binding Category}"
+                                   TextWrapping="Wrap"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"></TextBlock>
+                                </Grid>
+                                <Grid Grid.Column="2"
+                                      HorizontalAlignment="Left"
+                                      Margin="16,24">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="4*"></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Описание:"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,8"></TextBlock>
+                                        <TextBlock Text="{Binding Description}"
+                                       TextWrapping="Wrap"
+                                       FontSize="16"></TextBlock>
+                                    </StackPanel>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="256"></ColumnDefinition>
+                                            <ColumnDefinition Width="1.4*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Date, StringFormat='{}{0:MM.dd.yyyy}'}"
+                                                       Margin="4,0"
+                                                       VerticalAlignment="Bottom"
+                                                       FontSize="16"></TextBlock>
+                                            <TextBlock Text="{Binding Time}"
+                                                       VerticalAlignment="Bottom"
+                                                       FontSize="16"></TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1"
+                                                    Orientation="Horizontal"
+                                                    HorizontalAlignment="Right">
+                                            <Button VerticalAlignment="Center"
+                                                    Content="Подробнее"
+                                                    Tag="{Binding RequestId}"
+                                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                                    Style="{StaticResource MaterialDesignFlatButton}"></Button>
+                                            <Button Content="Принять"
+                                                    Tag="{Binding RequestId}"
+                                                    Margin="16,0"
+                                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                                    Style="{StaticResource MaterialDesignFlatMidBgButton}"></Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>

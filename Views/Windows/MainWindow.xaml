@@ -1,0 +1,160 @@
+﻿<Window x:Class="Frontend_ServiceDesk.Views.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Frontend_ServiceDesk.Views.Windows"
+        mc:Ignorable="d"
+        Title="ServiceDesk"
+        MaxHeight="1080" MaxWidth="1920"
+        MinHeight="720" MinWidth="1280"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Background="#2B2B2B"
+                x:Name="topPanelBorder"
+                Panel.ZIndex="1">
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.3"></DropShadowEffect>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="356"></ColumnDefinition>
+                    <ColumnDefinition Width="144"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="ServiceDesk"
+                           Foreground="#F66633"
+                           FontSize="34"
+                           FontFamily="Inter-Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="16,0">
+                    <TextBlock.Effect>
+                        <DropShadowEffect Opacity="0.2"></DropShadowEffect>
+                    </TextBlock.Effect>
+                </TextBlock>
+                <Grid Grid.Column="1">
+                    <StackPanel Orientation="Horizontal"
+                                Height="64">
+                        <RadioButton Cursor="Hand"
+                                     Width="156"
+                                     FontSize="18"
+                                     BorderBrush="#F66633"
+                                     BorderThickness="0,0,0,3"
+                                     x:Name="ordersTab"
+                                     Checked="ordersTab_Checked"
+                                     Style="{StaticResource MaterialDesignTabRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Запросы"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="10,0,0,0"></TextBlock>
+                                <materialDesign:PackIcon Kind="ChevronDown"
+                                                         Height="32"
+                                                         Width="32"
+                                                         HorizontalAlignment="Left"></materialDesign:PackIcon>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Width="156"
+                                     Cursor="Hand"
+                                     FontSize="18"
+                                     BorderBrush="#F66633"
+                                     BorderThickness="0,0,0,3"
+                                     x:Name="reportsTab"
+                                     Checked="reportsTab_Checked"
+                                     Style="{StaticResource MaterialDesignTabRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Отчеты"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="10,0,0,0"></TextBlock>
+                                <materialDesign:PackIcon Kind="ChevronDown"
+                                                         Height="32"
+                                                         Width="32"
+                                                         HorizontalAlignment="Left"></materialDesign:PackIcon>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Width="156"
+                                     Cursor="Hand"
+                                     FontSize="18"
+                                     BorderBrush="#F66633"
+                                     BorderThickness="0,0,0,3"
+                                     x:Name="contactsTab"
+                                     Checked="contactsTab_Checked"
+                                     Style="{StaticResource MaterialDesignTabRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Контакты"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="10,0,0,0"></TextBlock>
+                                <materialDesign:PackIcon Kind="ChevronDown"
+                                                         Height="32"
+                                                         Width="32"
+                                                         HorizontalAlignment="Left"></materialDesign:PackIcon>
+                            </StackPanel>
+                        </RadioButton>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Column="2">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="emailTextBlock"
+                                   VerticalAlignment="Center"
+                                   FontSize="18"></TextBlock>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Height="64"
+                                Margin="8,0,0,0">
+                            <materialDesign:PackIcon Kind="ExitToApp"
+                                                     Width="40"
+                                                     Height="40"></materialDesign:PackIcon>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="64"></ColumnDefinition>
+                        <ColumnDefinition Width="64"></ColumnDefinition>
+                        <ColumnDefinition Width="16"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            x:Name="minimizeButton"
+                            Click="minimizeButton_Click">
+                        <materialDesign:PackIcon Kind="Minimize" 
+                                                 Foreground="#F66633"
+                                                 Height="32"
+                                                 Width="32"/>
+                    </Button>
+                    <Button IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            Grid.Column="1"
+                            x:Name="closeButton"
+                            Click="closeButton_Click">
+                        <materialDesign:PackIcon Kind="Close" 
+                                                 Foreground="#F66633"
+                                                 Height="32"
+                                                 Width="32"/>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+        <Frame x:Name="contentFrame"
+               NavigationUIVisibility="Hidden"
+               Grid.Row="1"></Frame>
+    </Grid>
+</Window>
