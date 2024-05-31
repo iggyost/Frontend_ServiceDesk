@@ -19,31 +19,28 @@ using System.Windows.Shapes;
 namespace Frontend_ServiceDesk.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for ReportsPage.xaml
+    /// Interaction logic for MyRequestsPage.xaml
     /// </summary>
-    public partial class ReportsPage : Page
+    public partial class MyRequestsPage : Page
     {
-        public ReportsPage()
+        public MyRequestsPage()
         {
             InitializeComponent();
         }
-        public async Task GetReports()
+        public async Task GetAdminRequests()
         {
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync($"{App.conString}reportsview/get");
+            HttpResponseMessage response = await client.GetAsync($"{App.conString}reportsview/get/admin/{App.enteredAdmin.AdminId}");
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
                 var data = JsonConvert.DeserializeObject<ReportsView[]>(content);
-                reportsListView.ItemsSource = data.ToList();
+                myRequestsListView.ItemsSource = data.ToList();
             }
         }
-
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            loadingIndicator.Visibility = Visibility.Visible;
-            await GetReports();
-            loadingIndicator.Visibility = Visibility.Collapsed;
+            await GetAdminRequests();
         }
 
         private void ellipseStatus_Loaded(object sender, RoutedEventArgs e)
@@ -62,6 +59,11 @@ namespace Frontend_ServiceDesk.Views.Pages
                     ellipse.Fill = Brushes.Green;
                     break;
             }
+        }
+
+        private void readyButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

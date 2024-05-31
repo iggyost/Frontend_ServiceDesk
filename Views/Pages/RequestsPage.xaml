@@ -70,21 +70,7 @@
                               Checked="firstOldRadioButton_Checked"
                               Style="{StaticResource MaterialDesignDarkCheckBox}" />
                 </StackPanel>
-                <TextBlock Text="Статус:"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           Margin="0,16"></TextBlock>
-                <StackPanel Orientation="Vertical">
-                    <CheckBox Content="Актуальные" 
-                              x:Name="actualRadioButton"
-                              Checked="actualRadioButton_Checked"
-                              Margin="0,0,0,8"
-                              Style="{StaticResource MaterialDesignDarkCheckBox}" />
-                    <CheckBox Content="В процессе" 
-                              x:Name="inProcessRadioButton"
-                              Checked="inProcessRadioButton_Checked"
-                              Style="{StaticResource MaterialDesignDarkCheckBox}" />
-                </StackPanel>
+
                 <TextBlock Text="Категория:"
                            FontSize="18"
                            FontWeight="SemiBold"
@@ -253,7 +239,7 @@
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="256"></ColumnDefinition>
-                                            <ColumnDefinition Width="1.4*"></ColumnDefinition>
+                                            <ColumnDefinition Width="214"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Orientation="Horizontal"
                                                     VerticalAlignment="Center">
@@ -268,12 +254,11 @@
                                         <StackPanel Grid.Column="1"
                                                     Orientation="Horizontal"
                                                     HorizontalAlignment="Right">
-                                            <Button VerticalAlignment="Center"
-                                                    Content="Подробнее"
-                                                    Tag="{Binding RequestId}"
-                                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                                                    Style="{StaticResource MaterialDesignFlatButton}"></Button>
                                             <Button Content="Принять"
+                                                    x:Name="acceptRequestButton"
+                                                    Click="acceptRequestButton_Click"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Right"
                                                     Tag="{Binding RequestId}"
                                                     Margin="16,0"
                                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"

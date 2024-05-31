@@ -13,5 +13,6 @@ namespace Frontend_ServiceDesk
         public static string conString = "http://192.168.0.10:45455/api/";
         public static User enteredUser = new User();
         public static Admin enteredAdmin = new Admin();
+        public static bool isNeedToRemember = false;
     }
 }

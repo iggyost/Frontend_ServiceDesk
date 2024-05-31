@@ -90,54 +90,7 @@ namespace Frontend_ServiceDesk.Views.Pages
             }
         }
 
-        private async void actualRadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            if (actualRadioButton.IsChecked == true)
-            {
-                inProcessRadioButton.IsChecked = false;
-
-                searchField.Text = string.Empty;
-                senderField.Text = string.Empty;
-
-                firstNewRadiobutton.IsChecked = false;
-                firstOldRadioButton.IsChecked = false;
-
-                categoriesComboBox.SelectedIndex = 3;
-
-                await GetRequests();
-                requestsListView.ItemsSource = currentRequests.Where(x => x.StatusId == 1);
-            }
-            else if (actualRadioButton.IsChecked == false && inProcessRadioButton.IsChecked == false &&
-                     firstNewRadiobutton.IsChecked == false && firstOldRadioButton.IsChecked == false)
-            {
-                await GetRequests();
-                requestsListView.ItemsSource = currentRequests;
-            }
-        }
-        private async void inProcessRadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            if (inProcessRadioButton.IsChecked == true)
-            {
-                actualRadioButton.IsChecked = false;
-
-                searchField.Text = string.Empty;
-                senderField.Text = string.Empty;
-
-                firstNewRadiobutton.IsChecked = false;
-                firstOldRadioButton.IsChecked = false;
-
-                categoriesComboBox.SelectedIndex = 3;
-
-                await GetRequests();
-                requestsListView.ItemsSource = currentRequests.Where(x => x.StatusId == 2);
-            }
-            else if (actualRadioButton.IsChecked == false && inProcessRadioButton.IsChecked == false &&
-                     firstNewRadiobutton.IsChecked == false && firstOldRadioButton.IsChecked == false)
-            {
-                await GetRequests();
-                requestsListView.ItemsSource = currentRequests;
-            }
-        }
+        
 
         private async void firstNewRadiobutton_Checked(object sender, RoutedEventArgs e)
         {
@@ -148,16 +101,14 @@ namespace Frontend_ServiceDesk.Views.Pages
                 searchField.Text = string.Empty;
                 senderField.Text = string.Empty;
 
-                inProcessRadioButton.IsChecked = false;
-                actualRadioButton.IsChecked = false;
+
 
                 categoriesComboBox.SelectedIndex = 3;
 
                 await GetRequests();
                 requestsListView.ItemsSource = currentRequests.OrderByDescending(x => x.Date);
             }
-            else if (actualRadioButton.IsChecked == false && inProcessRadioButton.IsChecked == false &&
-                     firstNewRadiobutton.IsChecked == false && firstOldRadioButton.IsChecked == false)
+            else if (firstNewRadiobutton.IsChecked == false && firstOldRadioButton.IsChecked == false)
             {
                 await GetRequests();
                 requestsListView.ItemsSource = currentRequests;
@@ -173,16 +124,12 @@ namespace Frontend_ServiceDesk.Views.Pages
                 searchField.Text = string.Empty;
                 senderField.Text = string.Empty;
 
-                inProcessRadioButton.IsChecked = false;
-                actualRadioButton.IsChecked = false;
-
                 categoriesComboBox.SelectedIndex = 3;
 
                 await GetRequests();
                 requestsListView.ItemsSource = currentRequests.OrderBy(x => x.Date);
             }
-            else if (actualRadioButton.IsChecked == false && inProcessRadioButton.IsChecked == false &&
-                     firstNewRadiobutton.IsChecked == false && firstOldRadioButton.IsChecked == false)
+            else if (firstNewRadiobutton.IsChecked == false && firstOldRadioButton.IsChecked == false)
             {
                 await GetRequests();
                 requestsListView.ItemsSource = currentRequests;
@@ -196,9 +143,6 @@ namespace Frontend_ServiceDesk.Views.Pages
                 {
                     isSearchFieldFocus = true;
                     senderField.Text = string.Empty;
-
-                    inProcessRadioButton.IsChecked = false;
-                    actualRadioButton.IsChecked = false;
 
                     firstNewRadiobutton.IsChecked = false;
                     firstOldRadioButton.IsChecked = false;
@@ -230,9 +174,6 @@ namespace Frontend_ServiceDesk.Views.Pages
                     isSearchFieldFocus = true;
                     searchField.Text = string.Empty;
 
-                    inProcessRadioButton.IsChecked = false;
-                    actualRadioButton.IsChecked = false;
-
                     firstNewRadiobutton.IsChecked = false;
                     firstOldRadioButton.IsChecked = false;
 
@@ -260,9 +201,6 @@ namespace Frontend_ServiceDesk.Views.Pages
         {
             searchField.Text = string.Empty;
             senderField.Text = string.Empty;
-
-            inProcessRadioButton.IsChecked = false;
-            actualRadioButton.IsChecked = false;
 
             firstNewRadiobutton.IsChecked = false;
             firstOldRadioButton.IsChecked = false;
@@ -300,21 +238,7 @@ namespace Frontend_ServiceDesk.Views.Pages
                 await ListenerRequests();
                 if (newRequests.SequenceEqual(currentRequests) != true)
                 {
-                    if (inProcessRadioButton.IsChecked == true || actualRadioButton.IsChecked == true)
-                    {
-                        switch (actualRadioButton.IsChecked)
-                        {
-                            case true:
-                                await GetRequests();
-                                requestsListView.ItemsSource = currentRequests.Where(x => x.StatusId == 1);
-                                break;
-                            case false:
-                                await GetRequests();
-                                requestsListView.ItemsSource = currentRequests.Where(x => x.StatusId == 2);
-                                break;
-                        }
-                    }
-                    else if (firstNewRadiobutton.IsChecked == true || firstOldRadioButton.IsChecked == true)
+                    if (firstNewRadiobutton.IsChecked == true || firstOldRadioButton.IsChecked == true)
                     {
                         switch (firstNewRadiobutton.IsChecked)
                         {
@@ -397,6 +321,27 @@ namespace Frontend_ServiceDesk.Views.Pages
                     break;
             }
         }
-
+        public async Task GetRequestInWork(int requestId)
+        {
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync($"{App.conString}reportsview/set/work/{App.enteredAdmin.AdminId}/{requestId}");
+            if (response.IsSuccessStatusCode)
+            {
+                CustomDisplayAlert alert = new CustomDisplayAlert("Запрос принят в работу", "");
+            }
+            else
+            {
+                CustomDisplayAlert alert = new CustomDisplayAlert("Вы уже приняли данный запрос", "");
+            }
+        }
+        private async void acceptRequestButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            var requestId = int.Parse(button.Tag.ToString());
+            loadingIndicator.Visibility = Visibility.Visible;
+            await GetRequestInWork(requestId);
+            await Task.Delay(4000);
+            loadingIndicator.Visibility = Visibility.Collapsed;
+        }
     }
 }

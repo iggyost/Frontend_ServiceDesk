@@ -1,0 +1,215 @@
+﻿<Window x:Class="Frontend_ServiceDesk.Views.Windows.ClientRequests"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Frontend_ServiceDesk.Views.Windows"
+        mc:Ignorable="d"
+        Title="Мои запросы"
+        Height="720" Width="1120"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="Transparent"
+        Loaded="Window_Loaded"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+    <Border Margin="16"
+            CornerRadius="20"
+            Background="{DynamicResource MaterialDesignPaper}">
+        <Border.Effect>
+            <DropShadowEffect Opacity="0.5"
+                              Direction="0"
+                              BlurRadius="16"></DropShadowEffect>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="64"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border Background="#2B2B2B"
+                    CornerRadius="20,20,0,0"
+                    MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="144"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="titleText"
+                               Text="Мои запросы"
+                               Foreground="#F66633"
+                               FontSize="28"
+                               FontFamily="Inter-Bold"
+                               Margin="16,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center">
+                    </TextBlock>
+                    <Grid Grid.Column="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="64"></ColumnDefinition>
+                            <ColumnDefinition Width="64"></ColumnDefinition>
+                            <ColumnDefinition Width="16"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                Grid.Column="1"
+                                x:Name="closeButton"
+                                Click="closeButton_Click">
+                            <materialDesign:PackIcon Kind="Close" 
+                                                     Foreground="#F66633"
+                                                     Height="32"
+                                                     Width="32"/>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="1"
+                  Margin="32,16">
+                <ListView x:Name="requestsListView"
+                      VirtualizingPanel.ScrollUnit="Pixel">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Height="224"
+                    Margin="16,0"
+                    BorderThickness="0"
+                    CornerRadius="20"
+                    Background="#333333">
+                                <Border.Effect>
+                                    <DropShadowEffect Direction="224"
+                                      Opacity="0.3"
+                                      BlurRadius="8"></DropShadowEffect>
+                                </Border.Effect>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="440"></ColumnDefinition>
+                                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                                        <ColumnDefinition Width="512"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Margin="16,8"
+                                      HorizontalAlignment="Left">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                                            <ColumnDefinition Width="0.6*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <!--Инцидент-->
+                                        <TextBlock Text="Инцидент:"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Margin="4,0,16,0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"></TextBlock>
+                                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   TextWrapping="Wrap"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"></TextBlock>
+                                        <!--Отправитель-->
+                                        <TextBlock Text="Отправитель:"
+                                   Grid.Row="1"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Margin="4,0,16,0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"></TextBlock>
+                                        <TextBlock Grid.Column="1"
+                                   Grid.Row="1"
+                                   Text="{Binding UserEmail}"
+                                   TextWrapping="Wrap"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"></TextBlock>
+                                        <!--Статус-->
+                                        <TextBlock Text="Статус:"
+                                               Grid.Row="2"
+                                               FontSize="14"
+                                               FontWeight="SemiBold"
+                                               Margin="4,0,16,0"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"></TextBlock>
+                                        <StackPanel Grid.Column="1"
+                                                Grid.Row="2"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                            <Ellipse Height="12"
+                                                 Width="12"
+                                                 Tag="{Binding StatusId}"
+                                                 x:Name="ellipseStatus"
+                                                     Loaded="ellipseStatus_Loaded"
+                                                 Margin="0,0,8,0"></Ellipse>
+                                            <TextBlock Grid.Column="1"
+                                                   Grid.Row="2"
+                                                   Text="{Binding Status}"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="16"
+                                                   VerticalAlignment="Center"></TextBlock>
+                                        </StackPanel>
+                                        <!--Категория-->
+                                        <TextBlock Text="Категория:"
+                                   Grid.Row="3"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Margin="4,0,16,0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"></TextBlock>
+                                        <TextBlock Grid.Column="1"
+                                   Grid.Row="3"
+                                   Text="{Binding Category}"
+                                   TextWrapping="Wrap"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"></TextBlock>
+                                    </Grid>
+                                    <Grid Grid.Column="2"
+                                      HorizontalAlignment="Left"
+                                      Margin="16,24">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="4*"></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="Описание:"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,8"></TextBlock>
+                                            <TextBlock Text="{Binding Description}"
+                                       TextWrapping="Wrap"
+                                       FontSize="16"></TextBlock>
+                                        </StackPanel>
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="256"></ColumnDefinition>
+                                                <ColumnDefinition Width="1.4*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Date, StringFormat='{}{0:MM.dd.yyyy}'}"
+                                                       Margin="4,0"
+                                                       VerticalAlignment="Bottom"
+                                                       FontSize="16"></TextBlock>
+                                                <TextBlock Text="{Binding Time}"
+                                                       VerticalAlignment="Bottom"
+                                                       FontSize="16"></TextBlock>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

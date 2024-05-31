@@ -16,6 +16,7 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
+        Loaded="Window_Loaded"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Border Background="#333333"
@@ -173,6 +174,7 @@
                                               materialDesign:CheckBoxAssist.CheckBoxSize="24"
                                               Margin="0,16,0,0"
                                               x:Name="rememberCheckBox"
+                                              Checked="rememberCheckBox_Checked"
                                               Style="{StaticResource MaterialDesignCheckBox}" />
                                     <Button Width="196"
                                             x:Name="enterButton"

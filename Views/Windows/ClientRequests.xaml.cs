@@ -13,37 +13,40 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Frontend_ServiceDesk.Views.Pages
+namespace Frontend_ServiceDesk.Views.Windows
 {
     /// <summary>
-    /// Interaction logic for ReportsPage.xaml
+    /// Interaction logic for ClientRequests.xaml
     /// </summary>
-    public partial class ReportsPage : Page
+    public partial class ClientRequests : Window
     {
-        public ReportsPage()
+        public ClientRequests()
         {
             InitializeComponent();
         }
-        public async Task GetReports()
+
+        public async Task LoadRequests()
         {
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync($"{App.conString}reportsview/get");
+            HttpResponseMessage response = await client.GetAsync($"{App.conString}requestsview/get/user/{App.enteredUser.UserId}");
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<ReportsView[]>(content);
-                reportsListView.ItemsSource = data.ToList();
+                var userRequests = JsonConvert.DeserializeObject<RequestsView[]>(content);
+                requestsListView.ItemsSource = userRequests.ToList();
             }
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void closeButton_Click(object sender, RoutedEventArgs e)
         {
-            loadingIndicator.Visibility = Visibility.Visible;
-            await GetReports();
-            loadingIndicator.Visibility = Visibility.Collapsed;
+            this.Close();
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await LoadRequests();
         }
 
         private void ellipseStatus_Loaded(object sender, RoutedEventArgs e)
@@ -62,6 +65,11 @@ namespace Frontend_ServiceDesk.Views.Pages
                     ellipse.Fill = Brushes.Green;
                     break;
             }
+        }
+
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
     }
 }

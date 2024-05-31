@@ -18,6 +18,7 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
+        Loaded="Window_Loaded"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
@@ -90,23 +91,27 @@
                                                          HorizontalAlignment="Left"></materialDesign:PackIcon>
                             </StackPanel>
                         </RadioButton>
-                        <RadioButton Width="156"
+                        <RadioButton Width="208"
                                      Cursor="Hand"
                                      FontSize="18"
                                      BorderBrush="#F66633"
                                      BorderThickness="0,0,0,3"
-                                     x:Name="contactsTab"
-                                     Checked="contactsTab_Checked"
+                                     x:Name="myRequestsTab"
+                                     Checked="myRequestsTab_Checked"
                                      Style="{StaticResource MaterialDesignTabRadioButton}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Контакты"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Center"
-                                           Margin="10,0,0,0"></TextBlock>
+                                <TextBlock Text="Мои запросы"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Margin="10,0,0,0"></TextBlock>
                                 <materialDesign:PackIcon Kind="ChevronDown"
-                                                         Height="32"
-                                                         Width="32"
-                                                         HorizontalAlignment="Left"></materialDesign:PackIcon>
+                                                             Height="32"
+                                                             Width="32"
+                                                             HorizontalAlignment="Left"></materialDesign:PackIcon>
+                                <materialDesign:Badged x:Name="CountingBadge"
+                                                           BadgeColorZoneMode="PrimaryDark"
+                                                           VerticalAlignment="Center"
+                                                           Margin="8,0"></materialDesign:Badged>
                             </StackPanel>
                         </RadioButton>
                     </StackPanel>
@@ -118,6 +123,8 @@
                                    FontSize="18"></TextBlock>
                         <Button Style="{StaticResource MaterialDesignFlatButton}"
                                 Height="64"
+                                x:Name="exitButton"
+                                Click="exitButton_Click"
                                 Margin="8,0,0,0">
                             <materialDesign:PackIcon Kind="ExitToApp"
                                                      Width="40"
