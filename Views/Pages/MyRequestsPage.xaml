@@ -190,6 +190,7 @@
                                     <Button Height="224"
                                             materialDesign:ButtonAssist.CornerRadius="0,20,20,0"
                                             Content="✓"
+                                            Tag="{Binding RequestId}"
                                             x:Name="readyButton"
                                             Click="readyButton_Click"
                                             FontSize="36"></Button>

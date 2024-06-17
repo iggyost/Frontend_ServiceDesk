@@ -1,4 +1,5 @@
 ﻿using Frontend_ServiceDesk.ApplicationData;
+using Frontend_ServiceDesk.Views.Windows;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -60,10 +61,31 @@ namespace Frontend_ServiceDesk.Views.Pages
                     break;
             }
         }
-
-        private void readyButton_Click(object sender, RoutedEventArgs e)
+        public async Task GetRequestReady(int requestId)
         {
-
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync($"{App.conString}reportsview/set/ready/{App.enteredAdmin.AdminId}/{requestId}");
+            if (response.IsSuccessStatusCode)
+            {
+                CustomDisplayAlert alert = new CustomDisplayAlert("Запрос закрыт.", "");
+            }
+            else
+            {
+                CustomDisplayAlert alert = new CustomDisplayAlert("Вы уже закрыли данный запрос", "");
+            }
+        }
+        private async void readyButton_Click(object sender, RoutedEventArgs e)
+        {
+            loadingIndicator.Visibility = Visibility.Visible;
+            Button button = sender as Button;
+            var selectedRequestId = int.Parse(button.Tag.ToString());
+            if (selectedRequestId != 0)
+            {
+                await GetRequestReady(selectedRequestId);
+                await Task.Delay(3000);
+                await GetAdminRequests();
+            }
+            loadingIndicator.Visibility = Visibility.Collapsed;
         }
     }
 }
